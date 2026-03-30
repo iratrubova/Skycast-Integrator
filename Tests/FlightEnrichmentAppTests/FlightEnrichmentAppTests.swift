@@ -46,3 +46,6 @@ final class CurrencyMockServiceTests: XCTestCase {
         XCTAssertEqual(weather.windSpeed, 10.0)
     }
 }
+
+
+// Testing Github

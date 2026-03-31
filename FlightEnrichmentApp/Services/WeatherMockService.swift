@@ -25,6 +25,6 @@ final class WeatherMockService: WeatherServiceProtocol {
         default:
             // Generic fallback
             return WeatherData(temperature: 20.0, condition: "Sunny", humidity: 50, windSpeed: 10.0, icon: "01d")
-        }
+        } 
     }
 }

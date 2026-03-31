@@ -29,10 +29,22 @@ final class HomeViewModel: ObservableObject {
         Calendar.current.startOfDay(for: departureDate) >= Calendar.current.startOfDay(for: Date())
     }
     
+//    init(
+//        weatherService: WeatherServiceProtocol = RealWeatherService(),
+//        placesService: PlacesServiceProtocol = PlacesApiService(),
+//        currencyService: CurrencyServiceProtocol = CurrencyApiService(),
+//        coreDataStack: CoreDataStack = .shared
+//    ) {
+//        self.weatherService = weatherService
+//        self.placesService = placesService
+//        self.currencyService = currencyService
+//        self.coreDataStack = coreDataStack
+//    }
+    
     init(
-        weatherService: WeatherServiceProtocol = RealWeatherService(),
-        placesService: PlacesServiceProtocol = PlacesApiService(),
-        currencyService: CurrencyServiceProtocol = CurrencyApiService(),
+        weatherService: WeatherServiceProtocol = WeatherMockService(), // Use Mock
+        placesService: PlacesServiceProtocol = PlacesMockService(),   // Use Mock
+        currencyService: CurrencyServiceProtocol = CurrencyMockService(), // Use Mock
         coreDataStack: CoreDataStack = .shared
     ) {
         self.weatherService = weatherService

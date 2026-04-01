@@ -9,12 +9,12 @@ import Foundation
 // MARK: - API Response Models
 
 struct WeatherData: Codable, Identifiable {
-    let id = UUID()
-    let temperature: Double
-    let condition: String
-    let humidity: Int
-    let windSpeed: Double
-    let icon: String
+    public let id = UUID()
+    public let temperature: Double
+    public let condition: String
+    public let humidity: Int
+    public let windSpeed: Double
+    public let icon: String
     
     enum CodingKeys: String, CodingKey {
         case temperature = "temp"

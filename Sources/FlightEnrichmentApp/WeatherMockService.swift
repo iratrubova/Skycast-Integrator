@@ -7,10 +7,15 @@
 
 import Foundation
 
-final class WeatherMockService: WeatherServiceProtocol {
+public final class WeatherMockService: WeatherServiceProtocol {
+    public init() {} 
     func fetchWeather(for city: String, date: Date) async throws -> WeatherData {
         // Simulate network latency
-        try await Task.sleep(nanoseconds: 400_000_000)
+        if #available(macOS 10.15, *) {
+            try await Task.sleep(nanoseconds: 400_000_000)
+        } else {
+            // Fallback on earlier versions
+        }
         
         let cityLower = city.lowercased().trimmingCharacters(in: .whitespaces)
         

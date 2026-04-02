@@ -21,6 +21,6 @@ let package = Package(
         .testTarget(
             name: "schoolLF8Tests",
             dependencies: ["schoolLF8"]
-        ),
+        )
     ]
 )

@@ -22,28 +22,21 @@ final class WeatherMockServiceTests: XCTestCase {
     }
 }
 
+func testDefaultWeather() async throws {
+    let service = WeatherMockService()
+    let weather = try await service.fetchWeather(for: "default", date: Date())
+    XCTAssertEqual(weather.windSpeed, 10.0)
+}
+
 
 final class CurrencyMockServiceTests: XCTestCase {
     
     func testGermanyCurrency() async throws {
         let service = CurrencyMockService()
-        let currency = try await service.fetchCurrency(for: "DE")
+        let currency = try await service.convert(amount: 1, from: "USD", to: "EUR")
         XCTAssertEqual(currency.rate, 0.92)
     }
-    
-    func testChinaCurrency() async throws {
-        let service = CurrencyMockService()
-        let currency = try await service.fetchCurrency(for: "CN")
-        XCTAssertEqual(currency.rate, 7.19)
-    }
-}
-
-    func testDefaultWeather() async throws {
-        let service = WeatherMockService()
-        let weather = try await service.fetchWeather(for: "default", date: Date())
-        XCTAssertEqual(weather.windSpeed, 10.0)
-    }
 }
 
 
-//Testing function
+

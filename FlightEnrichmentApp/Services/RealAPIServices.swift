@@ -84,7 +84,7 @@ final class RealWeatherService: WeatherServiceProtocol {
             return WeatherData(
                 temperature: owData.main.temp,
                 condition: owData.weather.first?.main ?? "Unknown",
-                humidity: owData.main.humidity,
+                humidity: Double(owData.main.humidity),
                 windSpeed: owData.wind.speed,
                 icon: owData.weather.first?.icon ?? "01d"
             )

@@ -29,10 +29,22 @@ final class HomeViewModel: ObservableObject {
         Calendar.current.startOfDay(for: departureDate) >= Calendar.current.startOfDay(for: Date())
     }
     
+//    init(
+//        weatherService: WeatherServiceProtocol = RealWeatherService(),
+//        placesService: PlacesServiceProtocol = PlacesApiService(),
+//        currencyService: CurrencyServiceProtocol = CurrencyApiService(),
+//        coreDataStack: CoreDataStack = .shared
+//    ) {
+//        self.weatherService = weatherService
+//        self.placesService = placesService
+//        self.currencyService = currencyService
+//        self.coreDataStack = coreDataStack
+//    }
+    
     init(
-        weatherService: WeatherServiceProtocol = RealWeatherService(),
-        placesService: PlacesServiceProtocol = PlacesApiService(),
-        currencyService: CurrencyServiceProtocol = CurrencyApiService(),
+        weatherService: WeatherServiceProtocol = WeatherMockService(), // Use Mock
+        placesService: PlacesServiceProtocol = PlacesMockService(),   // Use Mock
+        currencyService: CurrencyServiceProtocol = CurrencyMockService(), // Use Mock
         coreDataStack: CoreDataStack = .shared
     ) {
         self.weatherService = weatherService
@@ -198,7 +210,7 @@ final class HomeViewModel: ObservableObject {
         // 1. Find the file in the app bundle
         guard let url = Bundle.main.url(forResource: "city_country_mapping", withExtension: "json"),
               let data = try? Data(contentsOf: url) else {
-            print("❌ Could not find city_country_mapping.json")
+            print("Could not find city_country_mapping.json")
             return "US" // Default fallback
         }
         
@@ -209,11 +221,11 @@ final class HomeViewModel: ObservableObject {
             // 3. Search for the city (case-insensitive)
             let found = mappings.first { $0.city.lowercased() == cityName.lowercased() }
             
-            print("🌍 JSON Lookup: \(cityName) -> \(found?.country ?? "US")")
+            print("JSON Lookup: \(cityName) -> \(found?.country ?? "US")")
             return found?.country ?? "US"
             
         } catch {
-            print("❌ Error decoding JSON: \(error)")
+            print("Error decoding JSON: \(error)")
             return "US"
         }
     }

@@ -25,34 +25,34 @@ final class RealWeatherService: WeatherServiceProtocol {
         ]
         
         guard let url = components.url else {
-            print("❌ Failed to build URL for city: \(city)")
+            print("Failed to build URL for city: \(city)")
             throw APIError.invalidURL
         }
         
-        print("🌤️ Fetching weather for: \(city)")
-        print("🌐 URL: \(url.absoluteString)")
+        print("Fetching weather for: \(city)")
+        print("URL: \(url.absoluteString)")
         
         do {
             let (data, response) = try await session.data(from: url)
             
             guard let httpResponse = response as? HTTPURLResponse else {
-                print("❌ Invalid response type")
+                print("Invalid response type")
                 throw APIError.invalidResponse
             }
             
-            print("📡 Status Code: \(httpResponse.statusCode)")
+            print("Status Code: \(httpResponse.statusCode)")
             
             if let jsonString = String(data: data, encoding: .utf8) {
-                print("📦 Response: \(jsonString)")
+                print("Response: \(jsonString)")
             }
             
             if httpResponse.statusCode == 401 {
-                print("❌ Invalid API key")
+                print("Invalid API key")
                 throw APIError.serverError(401)
             }
             
             if httpResponse.statusCode == 404 {
-                print("❌ City not found")
+                print("City not found")
                 throw APIError.serverError(404)
             }
             
@@ -79,7 +79,7 @@ final class RealWeatherService: WeatherServiceProtocol {
             
             let owData = try JSONDecoder().decode(OWResponse.self, from: data)
             
-            print("✅ Got weather: \(owData.main.temp)°C, \(owData.weather.first?.main ?? "Unknown")")
+            print("Got weather: \(owData.main.temp)°C, \(owData.weather.first?.main ?? "Unknown")")
             
             return WeatherData(
                 temperature: owData.main.temp,
@@ -92,13 +92,13 @@ final class RealWeatherService: WeatherServiceProtocol {
         } catch let error as APIError {
             throw error
         } catch let error as URLError {
-            print("❌ URL Error: \(error.code.rawValue) - \(error.localizedDescription)")
+            print("URL Error: \(error.code.rawValue) - \(error.localizedDescription)")
             // Return mock data on network failure
-            print("⚠️ Using mock weather due to network error")
+            print("Using mock weather due to network error")
             return getMockWeather(for: city)
         } catch {
-            print("❌ Unexpected error: \(error)")
-            print("⚠️ Using mock weather due to error")
+            print("Unexpected error: \(error)")
+            print("Using mock weather due to error")
             return getMockWeather(for: city)
         }
     }
@@ -157,7 +157,7 @@ final class CurrencyApiService: CurrencyServiceProtocol {
         // 3. Look up the rate for the destination (e.g., NOK)
         let rate = result.conversion_rates[destinationCurrency] ?? 1.0
         
-        print("✅ CurrencyAPI: 1 USD = \(rate) \(destinationCurrency)")
+        print("CurrencyAPI: 1 USD = \(rate) \(destinationCurrency)")
 
         return CurrencyData(
             code: destinationCurrency,
@@ -178,7 +178,7 @@ final class CurrencyApiService: CurrencyServiceProtocol {
         // Use the struct name directly
         let response = try JSONDecoder().decode(PairConversionResponse.self, from: data)
         
-        print("✅ CurrencyAPI: Conversion Result: \(response.conversion_result)")
+        print("CurrencyAPI: Conversion Result: \(response.conversion_result)")
         
         return ConversionResult(
             fromCurrency: from,
@@ -227,7 +227,7 @@ final class PlacesApiService: PlacesServiceProtocol {
     private let apiKey = "5ea7d5f6f2154557ae13f2b568261584" // Using your key from the other service
     
     func fetchInterestingPlaces(for city: String) async throws -> [Place] {
-        print("🏛 PlacesAPI: Searching for \(city)...")
+        print("PlacesAPI: Searching for \(city)...")
         
         // Step 1: Get Coordinates for the city name
         let geoURL = "https://api.geoapify.com/v1/geocode/search?text=\(city.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? city)&apiKey=\(apiKey)"
@@ -237,7 +237,7 @@ final class PlacesApiService: PlacesServiceProtocol {
         let geoResponse = try JSONDecoder().decode(GeoapifyGeoResponse.self, from: geoData)
         
         guard let location = geoResponse.features.first?.properties else {
-            print("⚠️ PlacesAPI: Could not find coordinates for \(city)")
+            print("PlacesAPI: Could not find coordinates for \(city)")
             return []
         }
         
@@ -251,7 +251,7 @@ final class PlacesApiService: PlacesServiceProtocol {
         let (pData, _) = try await URLSession.shared.data(from: pUrl)
         let pResponse = try JSONDecoder().decode(GeoapifyResponse.self, from: pData)
         
-        print("✅ PlacesAPI: Found \(pResponse.features.count) sights in \(city)")
+        print("PlacesAPI: Found \(pResponse.features.count) sights in \(city)")
         
         return pResponse.features.compactMap { feature -> Place? in
             guard let name = feature.properties.name, !name.isEmpty else { return nil }

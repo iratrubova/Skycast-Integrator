@@ -1,0 +1,49 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main, ira, Leon ]
+  pull_request:
+    branches: [ main, ira, Leon ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: macos-latest
+    
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'swift' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: manual
+
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Build
+      run: |
+        xcodebuild clean build \
+          -project FlightEnrichmentApp.xcodeproj \
+          -scheme FlightEnrichmentApp \
+          -destination "platform=iOS Simulator,name=iPhone 15" \
+          CODE_SIGNING_REQUIRED=NO \
+          CODE_SIGNING_ALLOWED=NO
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3

@@ -12,7 +12,7 @@ struct WeatherData: Codable, Identifiable {
     public let id = UUID()
     public let temperature: Double
     public let condition: String
-    public let humidity: Int
+    public let humidity: Double
     public let windSpeed: Double
     public let icon: String
     

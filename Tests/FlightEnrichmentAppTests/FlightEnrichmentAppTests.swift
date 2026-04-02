@@ -20,12 +20,12 @@ final class WeatherMockServiceTests: XCTestCase {
         let weather = try await service.fetchWeather(for: "London", date: Date())
         XCTAssertEqual(weather.condition, "Rainy")
     }
-}
 
-func testDefaultWeather() async throws {
+    func testDefaultWeather() async throws {
     let service = WeatherMockService()
     let weather = try await service.fetchWeather(for: "default", date: Date())
     XCTAssertEqual(weather.windSpeed, 10.0)
+}
 }
 
 

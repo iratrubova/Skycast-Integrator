@@ -38,8 +38,6 @@ final class CurrencyMockServiceTests: XCTestCase {
     }
 }
 
-// Testing Github
-
     func testDefaultWeather() async throws {
         let service = WeatherMockService()
         let weather = try await service.fetchWeather(for: "default", date: Date())
@@ -48,4 +46,4 @@ final class CurrencyMockServiceTests: XCTestCase {
 }
 
 
-// Testing Github
+//Testing function

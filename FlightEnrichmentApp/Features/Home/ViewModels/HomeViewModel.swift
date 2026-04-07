@@ -28,7 +28,7 @@ final class HomeViewModel: ObservableObject {
         !destination.isEmpty &&
         Calendar.current.startOfDay(for: departureDate) >= Calendar.current.startOfDay(for: Date())
     }
-    
+//    
 //    init(
 //        weatherService: WeatherServiceProtocol = RealWeatherService(),
 //        placesService: PlacesServiceProtocol = PlacesApiService(),

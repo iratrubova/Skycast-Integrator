@@ -1,4 +1,5 @@
 import XCTest
+import CoreData
 @testable import schoolLF8
 
 final class WeatherMockServiceTests: XCTestCase {

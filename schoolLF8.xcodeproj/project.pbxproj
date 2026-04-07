@@ -56,16 +56,6 @@
 			path = FlightEnrichmentApp;
 			sourceTree = "<group>";
 		};
-		5DB84DF02F729EA000CCF0C2 /* schoolLF8Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = schoolLF8Tests;
-			sourceTree = "<group>";
-		};
-		5DB84DFA2F729EA000CCF0C2 /* schoolLF8UITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = schoolLF8UITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				5DB84DE02F729E9F00CCF0C2 /* FlightEnrichmentApp */,
-				5DB84DF02F729EA000CCF0C2 /* schoolLF8Tests */,
-				5DB84DFA2F729EA000CCF0C2 /* schoolLF8UITests */,
 				5DB84DDF2F729E9F00CCF0C2 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -151,9 +139,6 @@
 			dependencies = (
 				5DB84DEF2F729EA000CCF0C2 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				5DB84DF02F729EA000CCF0C2 /* schoolLF8Tests */,
-			);
 			name = schoolLF8Tests;
 			packageProductDependencies = (
 			);
@@ -173,9 +158,6 @@
 			);
 			dependencies = (
 				5DB84DF92F729EA000CCF0C2 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				5DB84DFA2F729EA000CCF0C2 /* schoolLF8UITests */,
 			);
 			name = schoolLF8UITests;
 			packageProductDependencies = (

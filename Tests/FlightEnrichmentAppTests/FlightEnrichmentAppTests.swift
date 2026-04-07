@@ -39,5 +39,26 @@ final class CurrencyMockServiceTests: XCTestCase {
     }
 }
 
+final class PlacesServiceTests: XCTestCase {
+    
+    // Test developed by Ahmed to verify fallback and mock logic
+    func testFetchInterestingPlaces() async throws {
+        // 1. Arrange
+        let service = PlacesMockService()
+        let knownCity = "Berlin"
+        let unknownCity = "Buxtehude"
+        
+        // 2. Act
+        let knownPlaces = try await service.fetchInterestingPlaces(for: knownCity)
+        let fallbackPlaces = try await service.fetchInterestingPlaces(for: unknownCity)
+        
+        // 3. Assert
+        XCTAssertEqual(knownPlaces.first?.name, "Brandenburg Gate", "Should return Berlin landmarks")
+        XCTAssertTrue(fallbackPlaces.contains(where: { $0.name.contains("City Center") }), "Should return generic fallback for unknown cities")
+        XCTAssertEqual(knownPlaces.count, 5, "Known cities should return 5 places")
+        XCTAssertEqual(fallbackPlaces.count, 5, "Fallback should also return 5 places")
+    }
+}
+
 
 

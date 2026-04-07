@@ -43,3 +43,5 @@ final class WeatherMockServiceTests: XCTestCase {
         XCTAssertEqual(weather.temperature, 20.0)
     }
 }
+
+

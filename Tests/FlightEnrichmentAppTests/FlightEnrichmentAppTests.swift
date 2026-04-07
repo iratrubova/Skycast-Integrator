@@ -1,4 +1,5 @@
 import XCTest
+import CoreData
 @testable import schoolLF8
 
 final class WeatherMockServiceTests: XCTestCase {
@@ -38,5 +39,66 @@ final class CurrencyMockServiceTests: XCTestCase {
     }
 }
 
+
+final class HomeViewModelTests: XCTestCase {
+    
+    var viewModel: HomeViewModel!
+
+    @MainActor
+    override func setUp() {
+        super.setUp()
+        viewModel = HomeViewModel(
+            weatherService: WeatherMockService(),
+            placesService: PlacesMockService(),
+            currencyService: CurrencyMockService(),
+            coreDataStack: CoreDataStack.shared
+        )
+    }
+
+    // MARK: - Validation Tests (canSearch)
+    
+    @MainActor
+    func testCanSearch_EmptyFields_ReturnsFalse() {
+        viewModel.origin = ""
+        viewModel.destination = ""
+        XCTAssertFalse(viewModel.canSearch, "Should not allow search with empty strings")
+    }
+
+    @MainActor
+    func testCanSearch_PastDate_ReturnsFalse() {
+        viewModel.origin = "London"
+        viewModel.destination = "Paris"
+        // day - yesterday
+        viewModel.departureDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        
+        XCTAssertFalse(viewModel.canSearch, "Should not allow searching for flights in the past")
+    }
+
+    @MainActor
+    func testCanSearch_FutureDate_ReturnsTrue() {
+        viewModel.origin = "London"
+        viewModel.destination = "Paris"
+        viewModel.departureDate = Date().addingTimeInterval(86400) // Tomorrow
+        
+        XCTAssertTrue(viewModel.canSearch, "Valid future date and cities should be searchable")
+    }
+
+    // MARK: - Search Logic Tests
+    
+    @MainActor
+    func testSearchFlight_Success_UpdatesState() async {
+        viewModel.origin = "London"
+        viewModel.destination = "Tokyo"
+        
+        await viewModel.searchFlight()
+        
+        XCTAssertFalse(viewModel.isLoading)
+        XCTAssertTrue(viewModel.showResults)
+        XCTAssertNotNil(viewModel.enrichedFlight)
+        XCTAssertEqual(viewModel.enrichedFlight?.destination, "Tokyo")
+    }
+
+
+}
 
 

@@ -14,7 +14,7 @@ let package = Package(
       
         .library(
             name: "schoolLF8",
-            targets: ["FlightEnrichment"]
+            targets: ["schoolLF8"]
         ),
     ],
     targets: [

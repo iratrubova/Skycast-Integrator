@@ -8,6 +8,8 @@ import CoreData
 import Foundation
 import Combine
 
+@available(macOS 10.15, *)
+@available(macOS 10.15, *)
 final class CoreDataStack: ObservableObject {
     static let shared = CoreDataStack()
     
@@ -36,7 +38,11 @@ final class CoreDataStack: ObservableObject {
         do {
             try context.save()
         } catch {
-            saveError = error
+            if #available(macOS 10.15, *) {
+                saveError = error
+            } else {
+                // Fallback on earlier versions
+            }
             print("Failed to save context: \(error.localizedDescription)")
         }
     }

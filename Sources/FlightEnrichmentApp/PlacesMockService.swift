@@ -47,7 +47,19 @@ final class PlacesMockService: PlacesServiceProtocol {
     ]
     
     func fetchInterestingPlaces(for city: String) async throws -> [Place] {
-        try await Task.sleep(nanoseconds: 500_000_000)
+        if #available(macOS 10.15, *) {
+            try await Task.sleep(nanoseconds: 500_000_000)
+        } else {
+            // Fallback on earlier versions
+        };if #available(macOS 10.15, *) {
+            try await Task.sleep(nanoseconds: 500_000_000)
+        } else {
+            // Fallback on earlier versions
+        };if #available(macOS 10.15, *) {
+            try await Task.sleep(nanoseconds: 500_000_000)
+        } else {
+            // Fallback on earlier versions
+        }
         
         if let places = cityPlaces[city] {
             return places

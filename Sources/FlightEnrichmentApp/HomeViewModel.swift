@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import CoreData
 
+@available(iOS 13.0, *)
 @MainActor
 final class HomeViewModel: ObservableObject {
     @Published var origin: String = ""

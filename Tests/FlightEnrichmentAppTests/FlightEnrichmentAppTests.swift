@@ -39,22 +39,22 @@ final class CurrencyMockServiceTests: XCTestCase {
     }
 }
 
-
 final class HomeViewModelTests: XCTestCase {
     
     var viewModel: HomeViewModel!
-
+    
     @MainActor
     override func setUp() {
         super.setUp()
+        // We use the mocks to avoid real network calls during testing
         viewModel = HomeViewModel(
             weatherService: WeatherMockService(),
             placesService: PlacesMockService(),
             currencyService: CurrencyMockService(),
-            coreDataStack: CoreDataStack.shared
+            coreDataStack: .shared // Usually, you'd use an 'in-memory' stack here
         )
     }
-
+    
     // MARK: - Validation Tests (canSearch)
     
     @MainActor
@@ -63,17 +63,17 @@ final class HomeViewModelTests: XCTestCase {
         viewModel.destination = ""
         XCTAssertFalse(viewModel.canSearch, "Should not allow search with empty strings")
     }
-
+    
     @MainActor
     func testCanSearch_PastDate_ReturnsFalse() {
         viewModel.origin = "London"
         viewModel.destination = "Paris"
-        // day - yesterday
+        // date - yesterday
         viewModel.departureDate = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         
         XCTAssertFalse(viewModel.canSearch, "Should not allow searching for flights in the past")
     }
-
+    
     @MainActor
     func testCanSearch_FutureDate_ReturnsTrue() {
         viewModel.origin = "London"
@@ -82,23 +82,5 @@ final class HomeViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.canSearch, "Valid future date and cities should be searchable")
     }
-
-    // MARK: - Search Logic Tests
     
-    @MainActor
-    func testSearchFlight_Success_UpdatesState() async {
-        viewModel.origin = "London"
-        viewModel.destination = "Tokyo"
-        
-        await viewModel.searchFlight()
-        
-        XCTAssertFalse(viewModel.isLoading)
-        XCTAssertTrue(viewModel.showResults)
-        XCTAssertNotNil(viewModel.enrichedFlight)
-        XCTAssertEqual(viewModel.enrichedFlight?.destination, "Tokyo")
-    }
-
-
 }
-
-

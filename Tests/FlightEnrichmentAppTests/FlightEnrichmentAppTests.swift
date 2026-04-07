@@ -27,6 +27,26 @@ final class WeatherMockServiceTests: XCTestCase {
     let weather = try await service.fetchWeather(for: "default", date: Date())
     XCTAssertEqual(weather.windSpeed, 10.0)
 }
+
+func testWeatherDecoding() throws {
+        let jsonData = """
+        {
+            "temp": 25.5,
+            "main": "Cloudy",
+            "humidity": 60,
+            "wind_speed": 5.5,
+            "weather_icon": "04d"
+        }
+        """.data(using: .utf8)!
+
+        let decoder = JSONDecoder()
+        let weather = try decoder.decode(WeatherData.self, from: jsonData)
+
+        XCTAssertEqual(weather.temperature, 25.5)
+        XCTAssertEqual(weather.condition, "Cloudy")
+    }
+
+
 }
 
 
@@ -60,5 +80,26 @@ final class PlacesServiceTests: XCTestCase {
     }
 }
 
+final class FlightEnrichmentStatus: XCTestCase {
+func testFlightEnrichmentStatus() {
+        var flight = EnrichedFlight(
+            id: UUID(),
+            origin: "NYC",
+            destination: "PAR",
+            departureDate: Date(),
+            returnDate: nil,
+            createdAt: Date()
+        )
+        
+        // false
+        XCTAssertFalse(flight.isFullyEnriched)
 
+        flight.weather = WeatherData(temperature: 20, condition: "Sunny", humidity: 40, windSpeed: 2, icon: "sun")
+        flight.places = []
+        flight.currency = CurrencyData(code: "EUR", name: "Euro", rateToUSD: 1.1, symbol: "€")
+
+        //true
+        XCTAssertTrue(flight.isFullyEnriched)
+    }
+}
 
